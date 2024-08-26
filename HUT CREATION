@@ -1,87 +1,79 @@
-#include<GL/freeglut.h>
+#include <GL/glut.h>
 
-void display() {
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT); 
-    glLineWidth(0.5); 
-
+void drawHut() {
     glBegin(GL_TRIANGLES);
     // TRIANGLE TOP  WITH GREEN COLOR
-      glColor3f(0.0f, 1.0f, 0.0f); 
-      glVertex2f(-0.65f, 0.06f); 
-      glVertex2f(0.65f, 0.06f);
-      glVertex2f(0.0f, 0.70f);
-    glEnd(); 
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glVertex2f(-0.65f, 0.06f);
+    glVertex2f(0.65f, 0.06f);
+    glVertex2f(0.0f, 0.70f);
+    glEnd();
 
     // MAIN BODY OF THE HUT : YELLOW COLOR
     glBegin(GL_QUADS);
-      glColor3f(1.0f, 1.0f, 0.0f);
-      glVertex2f(-0.65f, 0.06f);
-      glVertex2f(0.65f, 0.06f);
-      glVertex2f(0.65f, -0.85f);
-      glVertex2f(-0.65f, -0.85f); 
+    glColor3f(1.0f, 1.0f, 0.0f);
+    glVertex2f(-0.65f, 0.06f);
+    glVertex2f(0.65f, 0.06f);
+    glVertex2f(0.65f, -0.85f);
+    glVertex2f(-0.65f, -0.85f);
     glEnd();
 
     // WINDOW OF THE HUT : RED COLOR
     glBegin(GL_QUADS);
-      glColor3f(0.0f, 0.0f, 1.0f);
-      glVertex2f(-0.20f, -0.25f);
-      glVertex2f(0.20f, -0.25f);
-      glVertex2f(0.20f, -0.85f);
-      glVertex2f(-0.20f, -0.85f);
+    glColor3f(0.0f, 0.0f, 1.0f);
+    glVertex2f(-0.20f, -0.25f);
+    glVertex2f(0.20f, -0.25f);
+    glVertex2f(0.20f, -0.85f);
+    glVertex2f(-0.20f, -0.85f);
     glEnd();
 
     // WINDOW OF THE HUT : RED COLOR
     glBegin(GL_QUADS);
-      glColor3f(1.0f, 0.0f, 0.0f);
-      glVertex2f(-0.60f, -0.55f);
-      glVertex2f(-0.30f, -0.55f);
-      glVertex2f(-0.30f, -0.35f);
-      glVertex2f(-0.60f, -0.35f);
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glVertex2f(-0.60f, -0.55f);
+    glVertex2f(-0.30f, -0.55f);
+    glVertex2f(-0.30f, -0.35f);
+    glVertex2f(-0.60f, -0.35f);
     glEnd();
 
     // DOOR OF THE HUT : BLUE COLOR
     glBegin(GL_QUADS);
-      glColor3f(1.0f, 0.0f, 0.0f);
-      glVertex2f(0.30f, -0.55f);
-      glVertex2f(0.60f, -0.55f);
-      glVertex2f(0.60f, -0.35f);
-      glVertex2f(0.30f, -0.35f);
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glVertex2f(0.30f, -0.55f);
+    glVertex2f(0.60f, -0.55f);
+    glVertex2f(0.60f, -0.35f);
+    glVertex2f(0.30f, -0.35f);
     glEnd();
 
 
     // BASE OF THE HUT : PINK COLOR
     glBegin(GL_QUADS);
-      glColor3f(1.0f, 0.0f, 1.0f);
-      glVertex2f(0.65f, -0.85f);
-      glVertex2f(-0.65f, -0.85f);
-      glVertex2f(-0.68f, -0.90f);
-      glVertex2f(0.68f, -0.90f);
+    glColor3f(1.0f, 0.0f, 1.0f);
+    glVertex2f(0.65f, -0.85f);
+    glVertex2f(-0.65f, -0.85f);
+    glVertex2f(-0.68f, -0.90f);
+    glVertex2f(0.68f, -0.90f);
     glEnd();
+}
 
-    glFlush();
 
+
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    drawHut();
+
+    glutSwapBuffers();
 }
 
 int main(int argc, char** argv) {
-    // Initialize GLUT
     glutInit(&argc, argv);
-    // Set the display mode to single buffer and RGBA color
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-    // Set the window size
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowSize(500, 500);
-    // Set the window position
-    glutInitWindowPosition(100, 100);
-    // Create the window with a title
-    glutCreateWindow("CREATING HUT");
+    glutCreateWindow("OpenGL Hut Click");
 
-
-    // Register the display function
     glutDisplayFunc(display);
 
-    // Enter the GLUT event loop
     glutMainLoop();
-
     return 0;
 }
-
