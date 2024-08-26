@@ -1,0 +1,171 @@
+#include <GL/glut.h>
+#include<cmath>
+#include<string>
+
+float bgColor[3] = { 0.0f, 0.0f, 0.0f }; // Initial background color (black)
+
+// Function to display text on the screen
+void displayText(float x, float y, const std::string& text) {
+    glColor3f(0.0f, 1.0f, 0.0f); // Text color (GREEN)
+    glRasterPos2f(x, y);
+    for (char c : text) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
+    }
+}
+
+void drawHut() {
+    // TRIANGLE TOP WITH GREEN COLOR
+    glBegin(GL_TRIANGLES);
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glVertex2f(-0.65f, 0.06f);
+    glVertex2f(0.65f, 0.06f);
+    glVertex2f(0.0f, 0.70f);
+    glEnd();
+
+    // MAIN BODY OF THE HUT: YELLOW COLOR
+    glBegin(GL_QUADS);
+    glColor3f(1.0f, 1.0f, 0.0f);
+    glVertex2f(-0.65f, 0.06f);
+    glVertex2f(0.65f, 0.06f);
+    glVertex2f(0.65f, -0.85f);
+    glVertex2f(-0.65f, -0.85f);
+    glEnd();
+
+    // WINDOW OF THE HUT: BLUE COLOR
+    glBegin(GL_QUADS);
+    glColor3f(0.0f, 0.0f, 1.0f);
+    glVertex2f(-0.20f, -0.25f);
+    glVertex2f(0.20f, -0.25f);
+    glVertex2f(0.20f, -0.85f);
+    glVertex2f(-0.20f, -0.85f);
+    glEnd();
+
+    // WINDOW OF THE HUT: RED COLOR
+    glBegin(GL_QUADS);
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glVertex2f(-0.60f, -0.55f);
+    glVertex2f(-0.30f, -0.55f);
+    glVertex2f(-0.30f, -0.35f);
+    glVertex2f(-0.60f, -0.35f);
+    glEnd();
+
+    // DOOR OF THE HUT: RED COLOR
+    glBegin(GL_QUADS);
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glVertex2f(0.30f, -0.55f);
+    glVertex2f(0.60f, -0.55f);
+    glVertex2f(0.60f, -0.35f);
+    glVertex2f(0.30f, -0.35f);
+    glEnd();
+
+    // BASE OF THE HUT: PINK COLOR
+    glBegin(GL_QUADS);
+    glColor3f(1.0f, 0.0f, 1.0f);
+    glVertex2f(0.65f, -0.85f);
+    glVertex2f(-0.65f, -0.85f);
+    glVertex2f(-0.68f, -0.90f);
+    glVertex2f(0.68f, -0.90f);
+    glEnd();
+}
+
+void drawSun() {
+    // Draw a sun (yellow circle)
+    glColor3f(1.0f, 0.7f, 0.0f); // Sun color (yellow)
+    float cx = 0.7f, cy = 0.7f, r = 0.15f;
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2f(cx, cy);
+    for (int i = 0; i <= 100; i++) {
+        float angle = 2.0f * 3.1415926f * i / 100;
+        float x = r * cosf(angle);
+        float y = r * sinf(angle);
+        glVertex2f(cx + x, cy + y);
+    }
+    glEnd();
+}
+
+void drawMoonAndStars() {
+    // Draw a moon (white circle)
+    glColor3f(1.0f, 1.0f, 1.0f); // Moon color (white)
+    float cx = 0.7f, cy = 0.7f, r = 0.15f;
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2f(cx, cy);
+    for (int i = 0; i <= 100; i++) {
+        float angle = 2.0f * 3.1415926f * i / 100;
+        float x = r * cosf(angle);
+        float y = r * sinf(angle);
+        glVertex2f(cx + x, cy + y);
+    }
+    glEnd();
+
+    // Draw stars (small white dots)
+    glPointSize(3.0f);
+    glBegin(GL_POINTS);
+    glVertex2f(-0.5f, 0.8f);
+    glVertex2f(-0.7f, 0.6f);
+    glVertex2f(-0.3f, 0.9f);
+    glVertex2f(0.4f, 0.8f);
+    glVertex2f(0.2f, 0.5f);
+    glEnd();
+}
+
+void toggleBackgroundColor() {
+    if (bgColor[0] == 0.0f && bgColor[1] == 0.0f && bgColor[2] == 0.0f) {
+        // Current color is black, change to white
+        bgColor[0] = 1.0f;
+        bgColor[1] = 1.0f;
+        bgColor[2] = 1.0f;
+    }
+    else {
+        // Current color is white, change to black
+        bgColor[0] = 0.0f;
+        bgColor[1] = 0.0f;
+        bgColor[2] = 0.0f;
+    }
+}
+
+void mouseClick(int button, int state, int x, int y) {
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+        // Convert screen coordinates to OpenGL coordinates
+        float xPos = (x / (float)glutGet(GLUT_WINDOW_WIDTH)) * 2 - 1;
+        float yPos = 1 - (y / (float)glutGet(GLUT_WINDOW_HEIGHT)) * 2;
+
+        // Check if the click is within the hut's bounding box
+        if (xPos >= -0.65f && xPos <= 0.65f && yPos >= -0.85f && yPos <= 0.70f) {
+            toggleBackgroundColor();
+        }
+    }
+    glutPostRedisplay(); // Trigger a redisplay to update the screen
+}
+
+void display() {
+    glClearColor(bgColor[0], bgColor[1], bgColor[2], 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    drawHut();
+
+    // Draw the sun if the background is white, otherwise draw the moon and stars
+    if (bgColor[0] == 1.0f && bgColor[1] == 1.0f && bgColor[2] == 1.0f) {
+        drawSun();
+    }
+    else {
+        drawMoonAndStars();
+    }
+
+    // Display name and roll number at the bottom left corner
+    displayText(-0.45f, -0.98f, "NAME:AARSH S LAL ,SAP ID: 500102109");
+
+    glutSwapBuffers();
+}
+
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitWindowSize(500, 500);
+    glutCreateWindow("OpenGL Hut Click");
+
+    glutDisplayFunc(display);
+    glutMouseFunc(mouseClick);
+
+    glutMainLoop();
+    return 0;
+}
